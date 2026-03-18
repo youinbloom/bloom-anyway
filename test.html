@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+    <h1>Test Page - If you see this, static server is working</h1>
+    <p>Open browser console (F12) to check for JavaScript errors</p>
+    
+    <script>
+        console.log('Test page loaded successfully');
+        
+        // Test if USPS API is loaded
+        if (typeof USPSNewAPI !== 'undefined') {
+            console.log('✅ USPS New API loaded successfully');
+            
+            // Test API initialization
+            try {
+                const uspsAPI = new USPSNewAPI();
+                console.log('✅ USPS API initialized');
+                console.log('Consumer Key:', uspsAPI.consumerKey ? 'Set' : 'Not set');
+            } catch (error) {
+                console.error('❌ USPS API initialization failed:', error);
+            }
+        } else {
+            console.error('❌ USPS New API not loaded');
+        }
+        
+        // Test if Payment Processor is loaded
+        if (typeof PaymentProcessor !== 'undefined') {
+            console.log('✅ Payment Processor loaded successfully');
+        } else {
+            console.error('❌ Payment Processor not loaded');
+        }
+    </script>
+</body>
+</html>

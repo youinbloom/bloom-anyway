@@ -7,8 +7,8 @@ class USPSNewAPI {
         // New USPS API Configuration
         this.baseUrl = 'https://apis.usps.com';
         this.testingUrl = 'https://apis-tem.usps.com'; // Testing environment
-        this.consumerKey = process.env.USPS_CONSUMER_KEY || 'YOUR_CONSUMER_KEY';
-        this.consumerSecret = process.env.USPS_CONSUMER_SECRET || 'YOUR_CONSUMER_SECRET';
+        this.consumerKey = 'YOUR_CONSUMER_KEY';
+        this.consumerSecret = 'YOUR_CONSUMER_SECRET';
         this.accessToken = null;
         this.tokenExpiry = null;
     }

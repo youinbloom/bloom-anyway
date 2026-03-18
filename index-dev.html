@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Anyway - A Reflection on Growth, Resilience, and Turning 40</title>
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" ry="14" fill="%230f172a"/><text x="50%" y="52%" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="26" fill="white">BA</text></svg>'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="usps-api-new.js"></script>
+    <script src="payment.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        :root {
+            /* Inspired by You In Bloom brand */
+            --brand-from: #065f46; /* deep green */
+            --brand-to: #22c55e;   /* soft lime */
+            --ink: #0f172a;        /* slate-900 */
+        }
+
+        .bg-brand {
+            background: linear-gradient(135deg, var(--brand-from) 0%, var(--brand-to) 100%);
+        }
+
+        .text-brand {
+            background: linear-gradient(135deg, var(--brand-from) 0%, var(--brand-to) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-hover {
+            transition: transform 200ms ease, box-shadow 200ms ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(2, 6, 23, 0.10);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 600ms ease, transform 600ms ease;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal,
+            .reveal.is-visible,
+            .card-hover,
+            .card-hover:hover {
+                transition: none !important;
+                transform: none !important;
+            }
+        }
+
+        section[id] {
+            scroll-margin-top: 96px;
+        }
+
+        .carousel {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-900">
+    <!-- Top Nav -->
+    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+            <a href="/" class="serif text-2xl font-bold tracking-tight text-slate-900">
+                Bloom Anyway
+            </a>
+            <div class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
+                <button type="button" onclick="scrollToSection('content')" class="hover:text-slate-900 transition">
+                    About
+                </button>
+                <button type="button" onclick="scrollToSection('author')" class="hover:text-slate-900 transition">
+                    Author
+                </button>
+                <button type="button" onclick="scrollToSection('testimonials')" class="hover:text-slate-900 transition">
+                    Testimonials
+                </button>
+                <button type="button" onclick="scrollToSection('purchase')" class="hover:text-slate-900 transition">
+                    Purchase
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="scrollToPurchase()" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
+                    Buy now
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-white">
+        <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-slate-100 to-transparent"></div>
+        <div class="relative mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:py-24">
+            <div class="grid items-center gap-12 lg:grid-cols-2">
+                <div class="reveal">
+                    <p class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-700">
+                        <span class="flex h-2 w-2 items-center justify-center rounded-full bg-white ring-2 ring-slate-400"></span>
+                        A gentle, honest reflection for your next chapter
+                    </p>
+                    <h1 class="serif mt-6 text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl">
+                        Bloom Anyway
+                    </h1>
+                    <p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-700">
+                        A Reflection on Growth, Resilience, and Turning 40.
+                        For anyone learning to keep going—softly, bravely, and with hope.
+                    </p>
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <button onclick="scrollToPurchase()" class="rounded-xl bg-slate-900 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
+                            Buy Bloom Anyway
+                        </button>
+                        <button onclick="scrollToContent()" class="rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
+                            Learn more
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <div class="mx-auto max-w-md lg:ml-auto lg:max-w-lg">
+                        <img src="Images/Bloom Anyway - Chioma.png" alt="Bloom Anyway book cover" class="w-full object-contain object-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <main>
+    <section id="content" class="bg-slate-50 py-16 sm:py-20">
+        <div class="mx-auto max-w-6xl px-6">
+            <!-- Book Description -->
+            <div class="mx-auto max-w-4xl text-center reveal">
+                <h2 class="serif text-3xl font-bold tracking-tight sm:text-4xl">
+                    A book for the in-between seasons.
+                </h2>
+                <p class="mt-6 text-lg leading-relaxed text-slate-700">
+                    Bloom Anyway is a heartfelt reflection written as Chioma Omeniho approached her 40th birthday—a milestone that inspired deep gratitude, honest reflection, and renewed purpose.
+                </p>
+                <p class="mt-6 text-lg leading-relaxed text-slate-700">
+                    Through gentle storytelling and thoughtful reflections, this book invites readers to embrace every season of life, even the difficult ones. It reminds us that growth does not only happen when life is perfect. Sometimes the most beautiful transformation happens in the middle of challenges, transitions, and new beginnings.
+                </p>
+                <p class="mt-6 text-lg leading-relaxed text-slate-700">
+                    Bloom Anyway encourages readers to release pressure, rediscover their strength, and step confidently into the next chapter of their lives with grace, faith, and courage.
+                </p>
+            </div>
+
+            <div class="mx-auto mt-12 max-w-4xl grid gap-6 text-center sm:grid-cols-3">
+                <div class="card-hover reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-base font-semibold text-slate-900">Reflect</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Pause and make meaning of your journey.</p>
+                </div>
+                <div class="card-hover reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-base font-semibold text-slate-900">Heal</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Hold space for growth in hard seasons.</p>
+                </div>
+                <div class="card-hover reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-base font-semibold text-slate-900">Bloom</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Step into what’s next with courage.</p>
+                </div>
+            </div>
+
+            <!-- About the Author -->
+            <section id="author" class="mx-auto mt-16 max-w-6xl">
+                <div class="reveal">
+                    <div class="mx-auto max-w-4xl rounded-[2.75rem] border border-slate-200 bg-white p-12 text-center shadow-sm sm:p-14">
+                        <div class="flex justify-center">
+                            <div class="flex h-28 w-28 items-center justify-center rounded-full border border-emerald-200 bg-white p-1 shadow-sm">
+                                <img src="Images/chioma-omeniho-cofounder.jpg" alt="Dr. Chioma Omeniho" class="h-full w-full rounded-full object-cover object-center">
+                            </div>
+                        </div>
+                        <p class="mt-6 text-brand text-sm font-semibold tracking-wide uppercase">About Chioma</p>
+                        <h2 class="serif mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                            Transformational Leader &amp; Advocate
+                        </h2>
+                        <p class="mt-4 text-base leading-relaxed text-slate-700">
+                            Dr. Chioma Omeniho is the Co-Founder of You In Bloom, dedicated to equipping women to walk in confidence, celebrate progress, and overcome fear in pursuit of purpose.
+                        </p>
+                        <div id="full-biography" class="mt-8 text-left">
+                            <details class="group rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-slate-900">
+                                    <span>Read full biography</span>
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm transition group-open:rotate-180">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </summary>
+                                <div class="mt-5 space-y-5 text-base leading-relaxed text-slate-700">
+                                    <p>
+                                        Dr. Chioma Omeniho is a transformational leader, model, and advocate for women's empowerment who merges intellect, grace, and purpose to inspire others to live boldly and bloom fully. She is the Founder and Co-Founder of You In Bloom, a nonprofit organization dedicated to equipping women to walk in confidence, celebrate progress, and overcome fear in pursuit of purpose.
+                                    </p>
+                                    <p>
+                                        Chioma holds a Ph.D. in Industrial-Organizational Psychology from Keiser University, a Master's in International Commerce and Policy from Valparaiso University, and a Bachelor's in Public Administration from Madonna University. With a strong academic foundation in leadership and human behavior, she has spent her career developing programs that promote confidence, mental well-being, and personal growth.
+                                    </p>
+                                    <p>
+                                        Beyond her professional and academic accomplishments, Chioma's journey in pageantry and modeling has uniquely positioned her as a symbol of elegance and empowerment. A former beauty queen, she has held multiple pageant titles, including Miss Nigeria USA 2010, and continues to serve as an editorial model. She has also taught poise and etiquette with a renowned modeling agency, training young women in confidence, communication, and presence both on and off the runway.
+                                    </p>
+                                    <p>
+                                        Chioma is a graduate of the Art of Marriage Course by Family Life, where she deepened her commitment to building strong relationships and faith-centered living. Her work through You In Bloom bridges faith, personal development, and community service—helping individuals rediscover their strength, celebrate their growth, and live out their God-given purpose with excellence and grace.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why This Book Was Written -->
+            <section class="mx-auto mt-16 max-w-6xl">
+                <div class="mx-auto max-w-4xl text-center reveal">
+                    <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+                        <p class="text-brand text-sm font-semibold tracking-wide uppercase">Why it was written</p>
+                        <h2 class="serif mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                            A milestone that became a message.
+                        </h2>
+                        <p class="mt-6 text-lg leading-relaxed text-slate-700">
+                        As she approached 40, Chioma began reflecting on the lessons, struggles, and victories that shaped her journey. Bloom Anyway was written to encourage others—especially women navigating change—to see that life's challenges do not diminish their potential.
+                        </p>
+                        <p class="mt-5 text-lg leading-relaxed text-slate-700">
+                        No matter the season you are in, growth is still possible. Healing is still possible. Purpose is still possible.
+                        </p>
+                        <div class="mt-8 flex flex-col items-center gap-3 rounded-2xl bg-slate-50 p-6 text-center">
+                            <p class="serif text-2xl font-semibold text-slate-900">You can bloom anyway.</p>
+                            <button onclick="scrollToPurchase()" class="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition">
+                                Get your copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Image Carousel -->
+            <section id="gallery" class="mx-auto mt-16 max-w-6xl">
+                <div class="reveal text-center">
+                    <p class="text-brand text-sm font-semibold tracking-wide uppercase">Gallery</p>
+                    <h2 class="serif mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                        Moments &amp; highlights
+                    </h2>
+                </div>
+
+                <div class="reveal mt-10 rounded-[2.5rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                    <div class="flex items-center justify-between gap-4">
+                        <p class="text-sm font-semibold text-slate-900">Scroll to explore</p>
+                        <div class="flex items-center gap-2">
+                            <button type="button" data-carousel-prev class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 transition" aria-label="Previous images">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button type="button" data-carousel-next class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 transition" aria-label="Next images">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="carousel mt-5 flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2" data-carousel>
+                        <figure class="snap-start shrink-0 w-[260px] sm:w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                            <img src="Images/Bloom Anyway Chioma Omeniho USA.jpeg" alt="Bloom Anyway image" class="h-64 w-full object-cover">
+                        </figure>
+                        <figure class="snap-start shrink-0 w-[260px] sm:w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                            <img src="Images/Bloom Anyway Chioma Omeniho You in bloom.jpeg" alt="Bloom Anyway image" class="h-64 w-full object-cover">
+                        </figure>
+                        <figure class="snap-start shrink-0 w-[260px] sm:w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                            <img src="Images/Bloom Anyway Chioma Omeniho.jpeg. USA .jpeg" alt="Bloom Anyway image" class="h-64 w-full object-cover">
+                        </figure>
+                        <figure class="snap-start shrink-0 w-[260px] sm:w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                            <img src="Images/Bloom Anyway Chioma Omeniho.jpeg.,.jpeg" alt="Bloom Anyway image" class="h-64 w-full object-cover">
+                        </figure>
+                        <figure class="snap-start shrink-0 w-[260px] sm:w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                            <img src="Images/Bloom Anyway Chioma Omeniho.jpeg....jpeg" alt="Bloom Anyway image" class="h-64 w-full object-cover">
+                        </figure>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About the Author -->
+            <section id="author" class="mx-auto mt-16 max-w-6xl">
+                <div class="reveal">
+                    <div class="mx-auto max-w-4xl rounded-[2.75rem] border border-slate-200 bg-white p-12 text-center shadow-sm sm:p-14">
+                        <div class="flex justify-center">
+                            <div class="flex h-28 w-28 items-center justify-center rounded-full border border-emerald-200 bg-white p-1 shadow-sm">
+                                <img src="Images/chioma-omeniho-cofounder.jpg" alt="Dr. Chioma Omeniho" class="h-full w-full rounded-full object-cover object-center">
+                            </div>
+                        </div>
+                        <p class="mt-6 text-brand text-sm font-semibold tracking-wide uppercase">About Chioma</p>
+                        <h2 class="serif mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                            Transformational Leader &amp; Advocate
+                        </h2>
+                        <p class="mt-4 text-base leading-relaxed text-slate-700">
+                            Dr. Chioma Omeniho is the Co-Founder of You In Bloom, dedicated to equipping women to walk in confidence, celebrate progress, and overcome fear in pursuit of purpose.
+                        </p>
+                        <div id="full-biography" class="mt-8 text-left">
+                            <details class="group rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-slate-900">
+                                    <span>Read full biography</span>
+                                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm transition group-open:rotate-180">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </summary>
+                                <div class="mt-5 space-y-5 text-base leading-relaxed text-slate-700">
+                                    <p>
+                                        Dr. Chioma Omeniho is a transformational leader, model, and advocate for women's empowerment who merges intellect, grace, and purpose to inspire others to live boldly and bloom fully. She is the Founder and Co-Founder of You In Bloom, a nonprofit organization dedicated to equipping women to walk in confidence, celebrate progress, and overcome fear in pursuit of purpose.
+                                    </p>
+                                    <p>
+                                        Chioma holds a Ph.D. in Industrial-Organizational Psychology from Keiser University, a Master's in International Commerce and Policy from Valparaiso University, and a Bachelor's in Public Administration from Madonna University. With a strong academic foundation in leadership and human behavior, she has spent her career developing programs that promote confidence, mental well-being, and personal growth.
+                                    </p>
+                                    <p>
+                                        Beyond her professional and academic accomplishments, Chioma's journey in pageantry and modeling has uniquely positioned her as a symbol of elegance and empowerment. A former beauty queen, she has held multiple pageant titles, including Miss Nigeria USA 2010, and continues to serve as an editorial model. She has also taught poise and etiquette with a renowned modeling agency, training young women in confidence, communication, and presence both on and off the runway.
+                                    </p>
+                                    <p>
+                                        Chioma is a graduate of the Art of Marriage Course by Family Life, where she deepened her commitment to building strong relationships and faith-centered living. Her work through You In Bloom bridges faith, personal development, and community service—helping individuals rediscover their strength, celebrate their growth, and live out their God-given purpose with excellence and grace.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- You In Bloom Section -->
+            <section id="you-in-bloom" class="mx-auto mt-16 max-w-6xl">
+                <div class="reveal rounded-[2.5rem] border border-slate-200 bg-emerald-950 px-8 py-10 text-white sm:px-10 sm:py-12">
+                    <div class="grid gap-10 lg:grid-cols-5 lg:items-center">
+                        <div class="lg:col-span-2">
+                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">
+                                You In Bloom Network
+                            </p>
+                            <h2 class="serif mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                                Where potential meets purpose.
+                            </h2>
+                            <p class="mt-4 text-sm sm:text-base leading-relaxed text-emerald-100">
+                                You In Bloom is a holistic empowerment organization dedicated to helping individuals, families, and communities grow from within—through wellness, ethics, and empowerment.
+                            </p>
+                            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                                <a href="https://youinbloom.org/programs" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-emerald-900 shadow-sm hover:bg-emerald-50 transition">
+                                    Explore programs
+                                    <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                                </a>
+                                <a href="https://youinbloom.org/contact-us" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-xl border border-emerald-400/60 bg-emerald-900/40 px-5 py-2.5 text-sm font-semibold text-emerald-100 hover:bg-emerald-800/70 transition">
+                                    Get in touch
+                                </a>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-3">
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div class="card-hover rounded-2xl border border-emerald-500/40 bg-emerald-900/60 p-5">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Poise &amp; Presence</p>
+                                    <h3 class="mt-2 text-base font-semibold">Poise and Etiquette</h3>
+                                    <p class="mt-2 text-sm text-emerald-100">
+                                        Confidence, emotional intelligence, and professional poise in action.
+                                    </p>
+                                </div>
+                                <div class="card-hover rounded-2xl border border-emerald-500/40 bg-emerald-900/60 p-5">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Wellness</p>
+                                    <h3 class="mt-2 text-base font-semibold">You in Wellness</h3>
+                                    <p class="mt-2 text-sm text-emerald-100">
+                                        Programs that support mental well-being and whole-person health.
+                                    </p>
+                                </div>
+                                <div class="card-hover rounded-2xl border border-emerald-500/40 bg-emerald-900/60 p-5">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Growth &amp; Learning</p>
+                                    <h3 class="mt-2 text-base font-semibold">Bloom Institute</h3>
+                                    <p class="mt-2 text-sm text-emerald-100">
+                                        Workshops and learning spaces that nurture confidence and purpose.
+                                    </p>
+                                </div>
+                                <div class="card-hover rounded-2xl border border-emerald-500/40 bg-emerald-900/60 p-5">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Home &amp; Community</p>
+                                    <h3 class="mt-2 text-base font-semibold">Wife Alive &amp; SafeNet</h3>
+                                    <p class="mt-2 text-sm text-emerald-100">
+                                        Faith-centered support for relationships, safety, and thriving families.
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-xs text-emerald-200">
+                                Learn more at <a href="https://youinbloom.org/" target="_blank" rel="noreferrer" class="underline underline-offset-4 hover:text-white transition">youinbloom.org</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section id="testimonials" class="mx-auto mt-16 max-w-6xl bg-white">
+                <div class="reveal text-center">
+                    <p class="text-brand text-sm font-semibold tracking-wide uppercase">Testimonials</p>
+                    <h2 class="serif mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                        What readers are saying
+                    </h2>
+                </div>
+
+                <div class="mt-10 grid gap-6 md:grid-cols-2">
+                    <div class="card-hover reveal rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-slate-700 italic leading-relaxed">
+                            "I really enjoyed reading Bloom Anyway. It felt honest, reflective, and encouraging. The message about continuing to grow even through difficult seasons really resonated with me, especially as someone navigating my own life transitions."
+                        </p>
+                        <p class="mt-4 text-sm font-semibold text-slate-900">Charity G.</p>
+                    </div>
+
+                    <div class="card-hover reveal rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-slate-700 italic leading-relaxed">
+                            "Bloom Anyway was such a refreshing and uplifting read. The reflections on turning 40 and embracing growth were relatable and inspiring. It reminded me that it's okay to keep evolving and discovering new parts of yourself. I turned 30 and this book still resonated with me."
+                        </p>
+                        <p class="mt-4 text-sm font-semibold text-slate-900">Heather H. RN</p>
+                    </div>
+
+                    <div class="card-hover reveal rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-slate-700 italic leading-relaxed">
+                            "This book felt like a gentle conversation with a friend. It encourages you to pause, reflect, and recognize that even when life isn't perfect, there is still room for growth and purpose."
+                        </p>
+                        <p class="mt-4 text-sm font-semibold text-slate-900">Nzube C.</p>
+                    </div>
+
+                    <div class="card-hover reveal rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-slate-700 italic leading-relaxed">
+                            "I loved the message behind the book. It's a reminder that our challenges don't stop our growth. The book made me reflect on my own journey and gave me a sense of hope for the next chapter of life. I turn 50 soon and looking forward to it."
+                        </p>
+                        <p class="mt-4 text-sm font-semibold text-slate-900">Tola A.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Purchase Section -->
+            <section id="purchase" class="mx-auto mt-16 max-w-6xl pb-16 sm:pb-20">
+                <div class="reveal overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-950 shadow-2xl">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-brand opacity-30"></div>
+                        <div class="relative grid gap-10 px-8 py-12 sm:px-12 sm:py-14 lg:grid-cols-5 lg:items-center">
+                            <div class="lg:col-span-3">
+                                <p class="text-white/80 text-sm font-semibold tracking-wide uppercase">Purchase</p>
+                                <h2 class="serif mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                                    Get your copy today
+                                </h2>
+                                <p class="mt-5 text-lg leading-relaxed text-white/80">
+                                    Start your journey of growth and resilience. If you’re purchasing for a group, reach out and we’ll help.
+                                </p>
+                                <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                                    <button onclick="handlePurchase()" class="rounded-xl bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-white/90 transition">
+                                        <i class="fas fa-shopping-cart mr-2"></i>
+                                        Buy Bloom Anyway
+                                    </button>
+                                    <a href="mailto:authorchiomaomeniho@gmail.com" class="rounded-xl border border-white/20 bg-white/5 px-7 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition">
+                                        <i class="fas fa-envelope mr-2"></i>
+                                        Contact author
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="lg:col-span-2">
+                                <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+                                    <p class="text-sm font-semibold text-white">You’ll love it if you want:</p>
+                                    <ul class="mt-4 space-y-3 text-sm text-white/75">
+                                        <li class="flex gap-2"><i class="fa-solid fa-sparkles mt-0.5 text-emerald-300"></i><span>A calm, encouraging voice</span></li>
+                                        <li class="flex gap-2"><i class="fa-solid fa-sparkles mt-0.5 text-emerald-300"></i><span>Stories that feel real and relatable</span></li>
+                                        <li class="flex gap-2"><i class="fa-solid fa-sparkles mt-0.5 text-emerald-300"></i><span>Reflections you can return to</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+    </footer>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-t-lg">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold serif">Order Bloom Anyway</h2>
+                    <button onclick="closePurchaseModal()" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                <form id="purchaseForm">
+                    <!-- Progress Steps -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div id="step1" class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
+                                <span class="ml-2 text-sm font-medium">Contact Info</span>
+                            </div>
+                            <div class="flex-1 h-1 bg-gray-300 mx-4"></div>
+                            <div class="flex items-center">
+                                <div id="step2" class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">2</div>
+                                <span class="ml-2 text-sm font-medium text-gray-600">Shipping Address</span>
+                            </div>
+                            <div class="flex-1 h-1 bg-gray-300 mx-4"></div>
+                            <div class="flex items-center">
+                                <div id="step3" class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">3</div>
+                                <span class="ml-2 text-sm font-medium text-gray-600">Review & Pay</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Contact Information -->
+                    <div id="contactStep" class="space-y-4">
+                        <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                                <input type="text" id="firstName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                                <input type="text" id="lastName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                            <input type="tel" id="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <button type="button" onclick="goToStep(2)" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                            Continue to Shipping
+                        </button>
+                    </div>
+
+                    <!-- Step 2: Shipping Address -->
+                    <div id="shippingStep" class="space-y-4 hidden">
+                        <h3 class="text-xl font-semibold mb-4">Shipping Address</h3>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Street Address *</label>
+                            <input type="text" id="address1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Apartment, suite, etc. (optional)</label>
+                            <input type="text" id="address2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                <input type="text" id="city" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">State *</label>
+                                <select id="state" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option value="">Select State</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code *</label>
+                                <input type="text" id="zipCode" required maxlength="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                                <input type="text" value="United States" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100">
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <button type="button" onclick="goToStep(1)" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                                Back
+                            </button>
+                            <button type="button" onclick="validateAndContinue()" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                                Continue to Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Order Summary & Payment -->
+                    <div id="reviewStep" class="space-y-4 hidden">
+                        <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
+                        
+                        <!-- Order Details -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex justify-between mb-2">
+                                <span>Bloom Anyway (Paperback)</span>
+                                <span id="bookPrice">$19.99</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Quantity</span>
+                                <span>1</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal</span>
+                                <span id="subtotal">$19.99</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Shipping (USPS)</span>
+                                <span id="shippingCost">Calculating...</span>
+                            </div>
+                            <div class="border-t pt-2 mt-2">
+                                <div class="flex justify-between font-semibold text-lg">
+                                    <span>Total</span>
+                                    <span id="totalCost">Calculating...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address Review -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Shipping Address</h4>
+                            <p id="reviewAddress" class="text-gray-700"></p>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="space-y-4">
+                            <h4 class="font-semibold">Payment Method</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="payment" value="card" checked class="mr-2">
+                                    <span>Credit/Debit Card</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="payment" value="paypal" class="mr-2">
+                                    <span>PayPal</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button type="button" onclick="goToStep(2)" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                                Back
+                            </button>
+                            <button type="button" onclick="processPayment()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                                Complete Purchase
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToContent() {
+            scrollToSection('content');
+        }
+
+        function scrollToPurchase() {
+            scrollToSection('purchase');
+        }
+
+        // Initialize APIs with error handling
+        let uspsAPI;
+        let paymentProcessor;
+        
+        try {
+            uspsAPI = new USPSNewAPI();
+            console.log('✅ USPS API initialized successfully');
+        } catch (error) {
+            console.error('❌ USPS API initialization failed:', error);
+            alert('There was an error initializing the USPS API. Please check the console for details.');
+        }
+        
+        try {
+            paymentProcessor = new PaymentProcessor();
+            console.log('✅ Payment Processor initialized successfully');
+        } catch (error) {
+            console.error('❌ Payment Processor initialization failed:', error);
+            alert('There was an error initializing the payment system. Please check the console for details.');
+        }
+
+        function handlePurchase() {
+            document.getElementById('purchaseModal').classList.remove('hidden');
+            document.getElementById('purchaseModal').classList.add('flex');
+        }
+
+        function closePurchaseModal() {
+            document.getElementById('purchaseModal').classList.add('hidden');
+            document.getElementById('purchaseModal').classList.remove('flex');
+        }
+
+        function goToStep(step) {
+            // Hide all steps
+            document.getElementById('contactStep').classList.add('hidden');
+            document.getElementById('shippingStep').classList.add('hidden');
+            document.getElementById('reviewStep').classList.add('hidden');
+            
+            // Reset step indicators
+            document.getElementById('step1').className = 'w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold';
+            document.getElementById('step2').className = 'w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold';
+            document.getElementById('step3').className = 'w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold';
+            
+            // Show current step and update indicators
+            if (step === 1) {
+                document.getElementById('contactStep').classList.remove('hidden');
+                document.getElementById('step1').className = 'w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-semibold';
+            } else if (step === 2) {
+                document.getElementById('shippingStep').classList.remove('hidden');
+                document.getElementById('step1').className = 'w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-semibold';
+                document.getElementById('step2').className = 'w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-semibold';
+            } else if (step === 3) {
+                document.getElementById('reviewStep').classList.remove('hidden');
+                document.getElementById('step1').className = 'w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-semibold';
+                document.getElementById('step2').className = 'w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-semibold';
+                document.getElementById('step3').className = 'w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-semibold';
+                updateOrderSummary();
+            }
+        }
+
+        function validateAndContinue() {
+            const address1 = document.getElementById('address1').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zipCode = document.getElementById('zipCode').value;
+            
+            if (!address1 || !city || !state || !zipCode) {
+                alert('Please fill in all required shipping address fields.');
+                return;
+            }
+            
+            if (zipCode.length !== 5 || !/^\d{5}$/.test(zipCode)) {
+                alert('Please enter a valid 5-digit ZIP code.');
+                return;
+            }
+            
+            // Validate address with USPS API
+            validateUSPSAddress();
+        }
+
+        function updateOrderSummary() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const address1 = document.getElementById('address1').value;
+            const address2 = document.getElementById('address2').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zipCode = document.getElementById('zipCode').value;
+            
+            const address = `${firstName} ${lastName}\n${address1}${address2 ? ', ' + address2 : ''}\n${city}, ${state} ${zipCode}`;
+            document.getElementById('reviewAddress').textContent = address;
+            
+            // Calculate shipping
+            calculateShipping();
+        }
+
+        async function validateUSPSAddress() {
+            const address1 = document.getElementById('address1').value;
+            const address2 = document.getElementById('address2').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zipCode = document.getElementById('zipCode').value;
+            
+            // Show loading state
+            const continueBtn = event.target;
+            const originalText = continueBtn.textContent;
+            continueBtn.textContent = 'Validating Address...';
+            continueBtn.disabled = true;
+            
+            try {
+                const result = await uspsAPI.validateAddressWithFallback(address1, address2, city, state, zipCode);
+                
+                if (result.error) {
+                    alert('Address validation failed: ' + result.error);
+                    continueBtn.textContent = originalText;
+                    continueBtn.disabled = false;
+                    return;
+                }
+                
+                if (result.isValid) {
+                    // Address is valid, continue to review step
+                    continueBtn.textContent = originalText;
+                    continueBtn.disabled = false;
+                    goToStep(3);
+                } else {
+                    alert('Address could not be verified. Please check your address and try again.');
+                    continueBtn.textContent = originalText;
+                    continueBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Address validation error:', error);
+                alert('An error occurred while validating your address. Please try again.');
+                continueBtn.textContent = originalText;
+                continueBtn.disabled = false;
+            }
+        }
+
+        async function calculateShipping() {
+            const zipCode = document.getElementById('zipCode').value;
+            const state = document.getElementById('state').value;
+            
+            // Show calculating state
+            document.getElementById('shippingCost').textContent = 'Calculating...';
+            document.getElementById('totalCost').textContent = 'Calculating...';
+            
+            try {
+                // Use a fixed origin ZIP (you can change this to your actual location)
+                const originZip = '10001'; // New York, NY as example
+                
+                const result = await uspsAPI.getShippingRates(originZip, zipCode);
+                
+                if (result.error) {
+                    document.getElementById('shippingCost').textContent = 'Error';
+                    document.getElementById('totalCost').textContent = 'Error';
+                    return;
+                }
+                
+                // Use the first (cheapest) rate by default
+                const shippingRate = result.rates[0];
+                const bookPrice = 19.99;
+                const subtotal = bookPrice;
+                const total = subtotal + shippingRate.rate;
+                
+                document.getElementById('shippingCost').textContent = `$${shippingRate.rate.toFixed(2)} (${shippingRate.service})`;
+                document.getElementById('totalCost').textContent = `$${total.toFixed(2)}`;
+                
+                // Store all rates for potential display
+                window.shippingRates = result.rates;
+                
+            } catch (error) {
+                console.error('Shipping calculation error:', error);
+                document.getElementById('shippingCost').textContent = 'Error';
+                document.getElementById('totalCost').textContent = 'Error';
+            }
+        }
+
+        async function processPayment() {
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            
+            // Collect form data
+            const formData = new FormData();
+            formData.append('firstName', document.getElementById('firstName').value);
+            formData.append('lastName', document.getElementById('lastName').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('address1', document.getElementById('address1').value);
+            formData.append('address2', document.getElementById('address2').value);
+            formData.append('city', document.getElementById('city').value);
+            formData.append('state', document.getElementById('state').value);
+            formData.append('zipCode', document.getElementById('zipCode').value);
+            
+            // Get total cost from the displayed element
+            const totalText = document.getElementById('totalCost').textContent;
+            const total = parseFloat(totalText.replace('$', ''));
+            const shippingText = document.getElementById('shippingCost').textContent;
+            const shippingCost = parseFloat(shippingText.split('$')[1].split(' ')[0]);
+            
+            formData.append('bookPrice', 19.99);
+            formData.append('shippingCost', shippingCost);
+            formData.append('total', total);
+            
+            const orderDetails = paymentProcessor.createOrderDetails(formData);
+            
+            // Show processing state
+            const paymentBtn = event.target;
+            const originalText = paymentBtn.textContent;
+            paymentBtn.textContent = 'Processing...';
+            paymentBtn.disabled = true;
+            
+            try {
+                let result;
+                
+                if (paymentMethod === 'card') {
+                    result = await paymentProcessor.processStripePayment(orderDetails);
+                } else {
+                    result = await paymentProcessor.processPayPalPayment(orderDetails);
+                }
+                
+                if (result.success) {
+                    // Send order confirmation
+                    await paymentProcessor.sendOrderConfirmation(orderDetails);
+                    
+                    // Show success message
+                    paymentProcessor.showPaymentSuccess(result, orderDetails);
+                } else {
+                    throw new Error(result.error || 'Payment failed');
+                }
+                
+            } catch (error) {
+                console.error('Payment processing error:', error);
+                paymentProcessor.showPaymentError(error.message);
+                
+                // Reset button
+                paymentBtn.textContent = originalText;
+                paymentBtn.disabled = false;
+            }
+        }
+
+        // Scroll reveal animation (respects reduced motion)
+        const observerOptions = {
+            threshold: 0.12,
+            rootMargin: '0px 0px -10% 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const revealEls = document.querySelectorAll('.reveal');
+            revealEls.forEach(el => {
+                if (prefersReducedMotion) {
+                    el.classList.add('is-visible');
+                    return;
+                }
+                observer.observe(el);
+            });
+        });
+
+        // Carousel controls + gentle autoplay (respects reduced motion)
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.querySelector('[data-carousel]');
+            const prevBtn = document.querySelector('[data-carousel-prev]');
+            const nextBtn = document.querySelector('[data-carousel-next]');
+            if (!track || !prevBtn || !nextBtn) return;
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const getStep = () => {
+                const first = track.querySelector('figure');
+                if (!first) return 320;
+                const styles = window.getComputedStyle(track);
+                const gap = parseFloat(styles.columnGap || styles.gap || '16') || 16;
+                return first.getBoundingClientRect().width + gap;
+            };
+
+            const scrollByStep = (dir) => {
+                track.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
+            };
+
+            prevBtn.addEventListener('click', () => scrollByStep(-1));
+            nextBtn.addEventListener('click', () => scrollByStep(1));
+
+            // Autoplay: pauses on hover/focus, loops back near start at end
+            if (!prefersReducedMotion) {
+                let autoplay = null;
+                const start = () => {
+                    if (autoplay) return;
+                    autoplay = window.setInterval(() => {
+                        const maxScrollLeft = track.scrollWidth - track.clientWidth;
+                        if (track.scrollLeft >= maxScrollLeft - 10) {
+                            track.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            scrollByStep(1);
+                        }
+                    }, 2800);
+                };
+                const stop = () => {
+                    if (!autoplay) return;
+                    window.clearInterval(autoplay);
+                    autoplay = null;
+                };
+
+                start();
+                track.addEventListener('mouseenter', stop);
+                track.addEventListener('mouseleave', start);
+                track.addEventListener('focusin', stop);
+                track.addEventListener('focusout', start);
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) stop();
+                    else start();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

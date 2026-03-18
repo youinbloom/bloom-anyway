@@ -7,6 +7,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "order.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "Images/**/*",
       "use": "@vercel/static"
     },
@@ -19,6 +23,10 @@
     {
       "src": "/",
       "dest": "index.html"
+    },
+    {
+      "src": "/order",
+      "dest": "order.html"
     },
     {
       "src": "/Images/(.*)",

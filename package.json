@@ -1,0 +1,21 @@
+{
+  "name": "bloom-anyway-website",
+  "version": "1.0.0",
+  "description": "A beautiful website for the book Bloom Anyway by Chioma Omeniho",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'No build step needed for static site'",
+    "preview": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "book",
+    "website",
+    "bloom-anyway",
+    "chioma-omeniho"
+  ],
+  "author": "Chioma Omeniho",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}

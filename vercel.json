@@ -29,6 +29,10 @@
       "dest": "order.html"
     },
     {
+      "src": "/order.html",
+      "dest": "order.html"
+    },
+    {
       "src": "/Images/(.*)",
       "dest": "/Images/$1"
     },

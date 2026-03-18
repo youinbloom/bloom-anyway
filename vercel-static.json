@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "bloom-anyway",
+  "buildCommand": "echo 'No build needed for static site'",
+  "outputDirectory": ".",
+  "installCommand": "echo 'No install needed for static site'",
+  "framework": null,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ]
+}

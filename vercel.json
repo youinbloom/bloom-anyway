@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "name": "bloom-anyway",
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "index.html"
+    }
+  ],
+  "functions": {
+    "api/usps/validate-address": {
+      "runtime": "nodejs18.x",
+      "handler": "server-new.js"
+    },
+    "api/usps/shipping-rates": {
+      "runtime": "nodejs18.x", 
+      "handler": "server-new.js"
+    }
+  }
+}

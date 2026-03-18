@@ -7,6 +7,7 @@
     <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" ry="14" fill="%230f172a"/><text x="50%" y="52%" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="26" fill="white">BA</text></svg>'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="usps-api-production.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
         
@@ -752,11 +753,20 @@
             scrollToSection('purchase');
         }
 
-        // Simple initialization without external APIs
-        let uspsAPI = null;
-        let paymentProcessor = null;
+        // Initialize USPS API
+        let uspsAPI;
         
-        console.log('✅ Website initialized successfully (demo mode)');
+        try {
+            uspsAPI = new USPSAPI();
+            console.log('✅ USPS API initialized successfully');
+        } catch (error) {
+            console.error('❌ USPS API initialization failed:', error);
+            // Create fallback API
+            uspsAPI = {
+                validateAddress: () => ({ isValid: true, message: 'Demo mode' }),
+                getShippingRates: () => ({ rates: [{ service: 'Demo', rate: 5.99 }] })
+            };
+        }
 
         function handlePurchase() {
             document.getElementById('purchaseModal').classList.remove('hidden');
@@ -846,8 +856,7 @@
             continueBtn.disabled = true;
             
             try {
-                // Demo address validation - always succeeds
-                const result = { isValid: true, message: 'Address validated successfully (demo mode)' };
+                const result = await uspsAPI.validateAddress(address1, address2, city, state, zipCode);
                 
                 if (result.error) {
                     alert('Address validation failed: ' + result.error);
@@ -883,28 +892,29 @@
             document.getElementById('totalCost').textContent = 'Calculating...';
             
             try {
-                // Demo shipping rates calculation
-                const firstDigit = parseInt(zipCode[0]);
-                let baseRate = 5.99;
+                // Use a fixed origin ZIP (you can change this to your actual location)
+                const originZip = '10001'; // New York, NY as example
                 
-                // Adjust rates based on region
-                if (firstDigit === 9) { // West Coast
-                    baseRate = 6.99;
-                } else if (firstDigit === 0 || firstDigit === 1) { // Northeast
-                    baseRate = 7.99;
-                } else if (firstDigit === 8) { // Mountain
-                    baseRate = 8.99;
-                } else if (firstDigit === 2) { // Alaska/Hawaii region
-                    baseRate = 12.99;
+                const result = await uspsAPI.getShippingRates(originZip, zipCode);
+                
+                if (result.error) {
+                    document.getElementById('shippingCost').textContent = 'Error';
+                    return;
                 }
                 
-                document.getElementById('shippingCost').textContent = '$' + baseRate.toFixed(2);
-                updateOrderSummary();
+                // Display shipping rates
+                const rates = result.rates;
+                if (rates && rates.length > 0) {
+                    // Use the first rate (usually Ground Advantage)
+                    document.getElementById('shippingCost').textContent = '$' + rates[0].rate.toFixed(2);
+                    updateOrderSummary();
+                } else {
+                    document.getElementById('shippingCost').textContent = 'Error';
+                }
                 
             } catch (error) {
                 console.error('Shipping calculation error:', error);
                 document.getElementById('shippingCost').textContent = 'Error';
-                document.getElementById('totalCost').textContent = 'Error';
             }
         }
 

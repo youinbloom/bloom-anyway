@@ -5,12 +5,28 @@
     {
       "src": "index.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "Images/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "usps-api-production.js",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/",
       "dest": "index.html"
+    },
+    {
+      "src": "/Images/(.*)",
+      "dest": "/Images/$1"
+    },
+    {
+      "src": "/usps-api-production.js",
+      "dest": "/usps-api-production.js"
     }
   ]
 }

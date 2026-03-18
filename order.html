@@ -4,346 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Bloom Anyway - A Reflection on Growth, Resilience, and Turning 40</title>
-    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" ry="14" fill="%23000000"/><text x="50%" y="52%" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="26" fill="white">BA</text></svg>'>
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" ry="14" fill="%230f172a"/><text x="50%" y="52%" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="26" fill="white">BA</text></svg>'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="usps-api-production.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            color: #ffffff;
-            line-height: 1.6;
-        }
-        
         .serif {
             font-family: 'Playfair Display', serif;
         }
         
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+        .text-brand {
+            color: #667eea;
         }
         
-        .order-header {
-            text-align: center;
-            margin-bottom: 3rem;
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
         }
         
-        .order-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            font-family: 'Playfair Display', serif;
-            color: #ffffff;
-        }
-        
-        .order-subtitle {
-            font-size: 1.25rem;
-            font-weight: 300;
-            color: #cccccc;
-        }
-        
-        .order-form {
-            background-color: #111111;
-            border: 1px solid #333333;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .form-section {
-            margin-bottom: 2rem;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #ffffff;
-            border-bottom: 1px solid #333333;
-            padding-bottom: 0.5rem;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #ffffff;
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .form-input {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #333333;
+            border: 1px solid #d1d5db;
             border-radius: 0.375rem;
             font-size: 1rem;
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #000000;
             transition: border-color 0.3s ease;
         }
         
         .form-input:focus {
             outline: none;
-            border-color: #666666;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         .form-input::placeholder {
-            color: #666666;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background-color: #ffffff;
-            color: #000000;
-        }
-        
-        .btn-primary:hover {
-            background-color: #cccccc;
-            transform: translateY(-1px);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            color: #ffffff;
-            border: 1px solid #666666;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #333333;
-            border-color: #999999;
-        }
-        
-        .order-summary {
-            background-color: #111111;
-            border: 1px solid #333333;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-        
-        .summary-row.total {
-            font-weight: 700;
-            font-size: 1.25rem;
-            border-top: 1px solid #333333;
-            padding-top: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .payment-options {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .payment-option {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #9ca3af;
         }
         
         .payment-option input[type="radio"] {
-            accent-color: #ffffff;
-        }
-        
-        .order-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-        
-        .back-link {
-            color: #999999;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .back-link:hover {
-            color: #ffffff;
-        }
-        
-        .error {
-            color: #ef4444;
-            background-color: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            margin-bottom: 1rem;
-        }
-        
-        .success {
-            color: #10b981;
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px solid #10b981;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem 0.5rem;
-            }
-            
-            .order-title {
-                font-size: 2rem;
-            }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .order-actions {
-                flex-direction: column;
-            }
+            accent-color: #667eea;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Order Header -->
-        <div class="order-header">
-            <h1 class="order-title serif">Order Bloom Anyway</h1>
-            <p class="order-subtitle">Complete your order for this inspiring reflection on growth and resilience</p>
-        </div>
-
-        <!-- Order Form -->
-        <div class="order-form">
-            <!-- Contact Information -->
-            <div class="form-section">
-                <h2 class="section-title">Contact Information</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label" for="firstName">First Name *</label>
-                        <input type="text" id="firstName" name="firstName" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="lastName">Last Name *</label>
-                        <input type="text" id="lastName" name="lastName" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-input">
-                    </div>
+<body class="bg-white">
+    <!-- Header (Same as home page) -->
+    <header class="fixed top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200">
+        <nav class="mx-auto max-w-6xl px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="serif text-xl font-bold text-slate-900">Bloom Anyway</span>
                 </div>
-            </div>
-
-            <!-- Shipping Address -->
-            <div class="form-section">
-                <h2 class="section-title">Shipping Address</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label" for="address1">Street Address *</label>
-                        <input type="text" id="address1" name="address1" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="address2">Apartment, Suite, etc.</label>
-                        <input type="text" id="address2" name="address2" class="form-input">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="city">City *</label>
-                        <input type="text" id="city" name="city" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="state">State *</label>
-                        <input type="text" id="state" name="state" class="form-input" required placeholder="e.g., NY">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="zipCode">ZIP Code *</label>
-                        <input type="text" id="zipCode" name="zipCode" class="form-input" required maxlength="5" pattern="[0-9]{5}">
-                    </div>
+                <div class="hidden sm:flex items-center gap-8">
+                    <a href="index.html" class="text-slate-600 hover:text-slate-900 transition">Home</a>
+                    <a href="#about" class="text-slate-600 hover:text-slate-900 transition">About</a>
+                    <a href="#testimonials" class="text-slate-600 hover:text-slate-900 transition">Reviews</a>
+                    <a href="/order" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition">Order</a>
                 </div>
-            </div>
-
-            <!-- Order Summary -->
-            <div class="order-summary">
-                <h2 class="section-title">Order Summary</h2>
-                <div class="summary-row">
-                    <span>Bloom Anyway (Paperback)</span>
-                    <span id="bookPrice">$19.99</span>
-                </div>
-                <div class="summary-row">
-                    <span>Shipping</span>
-                    <span id="shippingCost">Calculating...</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Total</span>
-                    <span id="totalCost">Calculating...</span>
-                </div>
-            </div>
-
-            <!-- Payment Method -->
-            <div class="form-section">
-                <h2 class="section-title">Payment Method</h2>
-                <div class="payment-options">
-                    <div class="payment-option">
-                        <input type="radio" id="card" name="payment" value="card" checked>
-                        <label for="card">Credit/Debit Card</label>
-                    </div>
-                    <div class="payment-option">
-                        <input type="radio" id="paypal" name="payment" value="paypal">
-                        <label for="paypal">PayPal</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Order Actions -->
-            <div class="order-actions">
-                <button type="button" onclick="validateAndContinue()" class="btn btn-primary">
-                    <i class="fas fa-lock"></i> Complete Order
+                <button class="sm:hidden text-slate-600">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <a href="index.html" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Back to Website
-                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Order Form Section -->
+    <main class="bg-slate-50 pt-24 pb-16 sm:pt-32 sm:pb-20">
+        <div class="mx-auto max-w-6xl px-6">
+            <div class="mx-auto max-w-4xl">
+                <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10 reveal">
+                    
+                    <!-- Order Header -->
+                    <div class="text-center mb-8">
+                        <h1 class="serif text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">Order Bloom Anyway</h1>
+                        <p class="text-lg text-slate-700">Complete your order for this inspiring reflection on growth and resilience</p>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="mb-8">
+                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Contact Information</h2>
+                        <div class="grid gap-6 sm:grid-cols-2">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="mb-8">
+                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Shipping Address</h2>
+                        <div class="grid gap-6 sm:grid-cols-2">
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Street Address *</label>
+                                <input type="text" id="address1" name="address1" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Apartment, Suite, etc.</label>
+                                <input type="text" id="address2" name="address2" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">City *</label>
+                                <input type="text" id="city" name="city" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">State *</label>
+                                <input type="text" id="state" name="state" class="form-input" required placeholder="e.g., NY">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">ZIP Code *</label>
+                                <input type="text" id="zipCode" name="zipCode" class="form-input" required maxlength="5" pattern="[0-9]{5}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="mb-8">
+                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Order Summary</h2>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                            <div class="flex justify-between mb-4">
+                                <span class="text-slate-700">Bloom Anyway (Paperback)</span>
+                                <span class="font-semibold text-slate-900" id="bookPrice">$19.99</span>
+                            </div>
+                            <div class="flex justify-between mb-4">
+                                <span class="text-slate-700">Shipping</span>
+                                <span class="font-semibold text-slate-900" id="shippingCost">Calculating...</span>
+                            </div>
+                            <div class="border-t border-slate-200 pt-4">
+                                <div class="flex justify-between">
+                                    <span class="text-lg font-semibold text-slate-900">Total</span>
+                                    <span class="text-lg font-bold text-slate-900" id="totalCost">Calculating...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="mb-8">
+                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Payment Method</h2>
+                        <div class="flex gap-6">
+                            <div class="payment-option">
+                                <input type="radio" id="card" name="payment" value="card" checked class="mr-2">
+                                <label for="card">Credit/Debit Card</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="paypal" name="payment" value="paypal" class="mr-2">
+                                <label for="paypal">PayPal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Actions -->
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <button type="button" onclick="validateAndContinue()" class="rounded-xl bg-slate-900 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
+                            <i class="fas fa-lock mr-2"></i> Complete Order
+                        </button>
+                        <a href="index.html" class="rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Website
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
         // Initialize USPS API

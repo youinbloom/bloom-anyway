@@ -82,33 +82,9 @@
     </style>
 </head>
 <body class="bg-white text-slate-900">
-    <!-- Top Nav -->
-    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <a href="/" class="serif text-2xl font-bold tracking-tight text-slate-900">
-                Bloom Anyway
-            </a>
-            <div class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
-                <button type="button" onclick="scrollToSection('content')" class="hover:text-slate-900 transition">
-                    About
-                </button>
-                <button type="button" onclick="scrollToSection('author')" class="hover:text-slate-900 transition">
-                    Author
-                </button>
-                <button type="button" onclick="scrollToSection('testimonials')" class="hover:text-slate-900 transition">
-                    Testimonials
-                </button>
-                <button type="button" onclick="scrollToSection('purchase')" class="hover:text-slate-900 transition">
-                    Purchase
-                </button>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="/order" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
-                    Buy now
-                </a>
-            </div>
-        </nav>
-    </header>
+    <!-- Shared Header -->
+    <div id="shared-header"></div>
+    <script src="components/shared-header.js"></script>
 
     <!-- Hero Section -->
     <section class="relative overflow-hidden bg-white">
@@ -128,9 +104,9 @@
                         For anyone learning to keep going—softly, bravely, and with hope.
                     </p>
                     <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <a href="/order" class="rounded-xl bg-slate-900 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
+                        <button onclick="window.location.href='order'" class="rounded-xl bg-slate-900 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
                             Buy Bloom Anyway
-                        </a>
+                        </button>
                         <button onclick="scrollToContent()" class="rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
                             Learn more
                         </button>
@@ -241,9 +217,9 @@
                         </p>
                         <div class="mt-8 flex flex-col items-center gap-3 rounded-2xl bg-slate-50 p-6 text-center">
                             <p class="serif text-2xl font-semibold text-slate-900">You can bloom anyway.</p>
-                            <a href="/order" class="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition">
+                            <button onclick="window.location.href='order'" class="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition">
                                 Get your copy
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -287,50 +263,6 @@
                         <figure class="snap-start shrink-0 w-[260px] sm:w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
                             <img src="Images/Bloom Anyway Chioma Omeniho.jpeg....jpeg" alt="Bloom Anyway image" class="h-64 w-full object-cover">
                         </figure>
-                    </div>
-                </div>
-            </section>
-
-            <!-- About the Author -->
-            <section id="author" class="mx-auto mt-16 max-w-6xl">
-                <div class="reveal">
-                    <div class="mx-auto max-w-4xl rounded-[2.75rem] border border-slate-200 bg-white p-12 text-center shadow-sm sm:p-14">
-                        <div class="flex justify-center">
-                            <div class="flex h-28 w-28 items-center justify-center rounded-full border border-emerald-200 bg-white p-1 shadow-sm">
-                                <img src="Images/chioma-omeniho-cofounder.jpg" alt="Dr. Chioma Omeniho" class="h-full w-full rounded-full object-cover object-center">
-                            </div>
-                        </div>
-                        <p class="mt-6 text-brand text-sm font-semibold tracking-wide uppercase">About Chioma</p>
-                        <h2 class="serif mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                            Transformational Leader &amp; Advocate
-                        </h2>
-                        <p class="mt-4 text-base leading-relaxed text-slate-700">
-                            Dr. Chioma Omeniho is the Co-Founder of You In Bloom, dedicated to equipping women to walk in confidence, celebrate progress, and overcome fear in pursuit of purpose.
-                        </p>
-                        <div id="full-biography" class="mt-8 text-left">
-                            <details class="group rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-slate-900">
-                                    <span>Read full biography</span>
-                                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm transition group-open:rotate-180">
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </summary>
-                                <div class="mt-5 space-y-5 text-base leading-relaxed text-slate-700">
-                                    <p>
-                                        Dr. Chioma Omeniho is a transformational leader, model, and advocate for women's empowerment who merges intellect, grace, and purpose to inspire others to live boldly and bloom fully. She is the Founder and Co-Founder of You In Bloom, a nonprofit organization dedicated to equipping women to walk in confidence, celebrate progress, and overcome fear in pursuit of purpose.
-                                    </p>
-                                    <p>
-                                        Chioma holds a Ph.D. in Industrial-Organizational Psychology from Keiser University, a Master's in International Commerce and Policy from Valparaiso University, and a Bachelor's in Public Administration from Madonna University. With a strong academic foundation in leadership and human behavior, she has spent her career developing programs that promote confidence, mental well-being, and personal growth.
-                                    </p>
-                                    <p>
-                                        Beyond her professional and academic accomplishments, Chioma's journey in pageantry and modeling has uniquely positioned her as a symbol of elegance and empowerment. A former beauty queen, she has held multiple pageant titles, including Miss Nigeria USA 2010, and continues to serve as an editorial model. She has also taught poise and etiquette with a renowned modeling agency, training young women in confidence, communication, and presence both on and off the runway.
-                                    </p>
-                                    <p>
-                                        Chioma is a graduate of the Art of Marriage Course by Family Life, where she deepened her commitment to building strong relationships and faith-centered living. Her work through You In Bloom bridges faith, personal development, and community service—helping individuals rediscover their strength, celebrate their growth, and live out their God-given purpose with excellence and grace.
-                                    </p>
-                                </div>
-                            </details>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -489,7 +421,7 @@
                                     Start your journey of growth and resilience. If you’re purchasing for a group, reach out and we’ll help.
                                 </p>
                                 <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                                    <button onclick="handlePurchase()" class="rounded-xl bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-white/90 transition">
+                                    <button onclick="window.location.href='order'" class="rounded-xl bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-white/90 transition">
                                         <i class="fas fa-shopping-cart mr-2"></i>
                                         Buy Bloom Anyway
                                     </button>
@@ -769,7 +701,7 @@
         }
 
         function handlePurchase() {
-            window.location.href = '/order';
+            window.location.href = 'order';
         }
 
         function closePurchaseModal() {

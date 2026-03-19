@@ -59,33 +59,42 @@
     </style>
 </head>
 <body class="bg-white">
-    <!-- Top Nav (Exact same as homepage) -->
-    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <a href="/" class="serif text-2xl font-bold tracking-tight text-slate-900">
-                Bloom Anyway
-            </a>
-            <div class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
-                <a href="/" class="hover:text-slate-900 transition">
-                    About
-                </a>
-                <a href="/" class="hover:text-slate-900 transition">
-                    Author
-                </a>
-                <a href="/" class="hover:text-slate-900 transition">
-                    Testimonials
-                </a>
-                <a href="/order" class="hover:text-slate-900 transition">
-                    Purchase
-                </a>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="/order" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
-                    Buy now
-                </a>
-            </div>
-        </nav>
-    </header>
+    <!-- Shared Header -->
+    <div id="shared-header"></div>
+    <script>
+        // Inline script for order page to avoid path issues
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerContainer = document.getElementById('shared-header');
+            if (headerContainer) {
+                headerContainer.innerHTML = `
+                    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+                        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+                            <a href="/" class="serif text-2xl font-bold tracking-tight text-slate-900">
+                                Bloom Anyway
+                            </a>
+                            <div class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
+                                <a href="/" class="hover:text-slate-900 transition">
+                                    Home
+                                </a>
+                                <a href="/#content" class="hover:text-slate-900 transition">
+                                    About
+                                </a>
+                                <a href="/#author" class="hover:text-slate-900 transition">
+                                    Author
+                                </a>
+                                <a href="/#testimonials" class="hover:text-slate-900 transition">
+                                    Testimonials
+                                </a>
+                                <a href="/order" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
+                                    Order
+                                </a>
+                            </div>
+                        </nav>
+                    </header>
+                `;
+            }
+        });
+    </script>
 
     <!-- Order Form Section -->
     <main class="bg-slate-50 pt-24 pb-16 sm:pt-32 sm:pb-20">

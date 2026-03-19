@@ -68,11 +68,12 @@
             if (headerContainer) {
                 headerContainer.innerHTML = `
                     <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-                        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-                            <a href="/" class="serif text-2xl font-bold tracking-tight text-slate-900">
+                        <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+                            <a href="/" class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
                                 Bloom Anyway
                             </a>
-                            <div class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
+                            <!-- Desktop Navigation -->
+                            <div class="hidden items-center gap-4 sm:gap-6 text-sm font-medium text-slate-700 md:flex">
                                 <a href="/" class="hover:text-slate-900 transition">
                                     Home
                                 </a>
@@ -85,33 +86,70 @@
                                 <a href="/#testimonials" class="hover:text-slate-900 transition">
                                     Testimonials
                                 </a>
-                                <a href="/order" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
+                                <a href="/order" class="rounded-xl bg-slate-900 px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
                                     Order
                                 </a>
                             </div>
+                            <!-- Mobile Navigation -->
+                            <div class="flex items-center gap-3">
+                                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-600 hover:text-slate-900 transition p-2">
+                                    <i class="fas fa-bars text-lg"></i>
+                                </button>
+                            </div>
                         </nav>
+                        <!-- Mobile Menu -->
+                        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white/95 backdrop-blur">
+                            <div class="px-4 py-3 space-y-2">
+                                <a href="/" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
+                                    Home
+                                </a>
+                                <a href="/#content" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
+                                    About
+                                </a>
+                                <a href="/#author" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
+                                    Author
+                                </a>
+                                <a href="/#testimonials" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
+                                    Testimonials
+                                </a>
+                                <a href="/order" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg transition">
+                                    Order
+                                </a>
+                            </div>
+                        </div>
                     </header>
                 `;
             }
         });
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.add('hidden');
+        }
     </script>
 
     <!-- Order Form Section -->
     <main class="bg-slate-50 pt-24 pb-16 sm:pt-32 sm:pb-20">
-        <div class="mx-auto max-w-6xl px-6">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="mx-auto max-w-4xl">
-                <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10 reveal">
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm sm:p-10 reveal">
                     
                     <!-- Order Header -->
-                    <div class="text-center mb-8">
-                        <h1 class="serif text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">Order Bloom Anyway</h1>
-                        <p class="text-lg text-slate-700">Complete your order for this inspiring reflection on growth and resilience</p>
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h1 class="serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 mb-4">Order Bloom Anyway</h1>
+                        <p class="text-base sm:text-lg text-slate-700">Complete your order for this inspiring reflection on growth and resilience</p>
                     </div>
                     
                     <!-- Contact Information -->
-                    <div class="mb-8">
-                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Contact Information</h2>
-                        <div class="grid gap-6 sm:grid-cols-2">
+                    <div class="mb-6 sm:mb-8">
+                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Contact Information</h2>
+                        <div class="grid gap-4 sm:gap-6 sm:grid-cols-2">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-2">First Name *</label>
                                 <input type="text" id="firstName" name="firstName" class="form-input" required>
@@ -132,9 +170,9 @@
                     </div>
 
                     <!-- Shipping Address -->
-                    <div class="mb-8">
-                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Shipping Address</h2>
-                        <div class="grid gap-6 sm:grid-cols-2">
+                    <div class="mb-6 sm:mb-8">
+                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Shipping Address</h2>
+                        <div class="grid gap-4 sm:gap-6 sm:grid-cols-2">
                             <div class="sm:col-span-2">
                                 <label class="block text-sm font-medium text-slate-700 mb-2">Street Address *</label>
                                 <input type="text" id="address1" name="address1" class="form-input" required>
@@ -159,9 +197,9 @@
                     </div>
 
                     <!-- Order Summary -->
-                    <div class="mb-8">
-                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Order Summary</h2>
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                    <div class="mb-6 sm:mb-8">
+                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Order Summary</h2>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
                             <div class="flex justify-between mb-4">
                                 <span class="text-slate-700">Bloom Anyway (Paperback)</span>
                                 <span class="font-semibold text-slate-900" id="bookPrice">$30.00</span>
@@ -180,9 +218,9 @@
                     </div>
 
                     <!-- Payment Method -->
-                    <div class="mb-8">
-                        <h2 class="serif text-2xl font-bold tracking-tight text-slate-900 mb-6">Payment Method</h2>
-                        <div class="flex gap-6">
+                    <div class="mb-6 sm:mb-8">
+                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Payment Method</h2>
+                        <div class="flex gap-4 sm:gap-6">
                             <div class="payment-option">
                                 <input type="radio" id="card" name="payment" value="card" checked class="mr-2">
                                 <label for="card">Credit/Debit Card</label>
@@ -196,10 +234,10 @@
 
                     <!-- Order Actions -->
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <button type="button" onclick="validateAndContinue()" class="rounded-xl bg-slate-900 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
+                        <button type="button" onclick="validateAndContinue()" class="w-full sm:w-auto rounded-xl bg-slate-900 px-6 py-3 sm:px-7 sm:py-3.5 text-sm sm:text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
                             <i class="fas fa-lock mr-2"></i> Complete Order
                         </button>
-                        <a href="index.html" class="rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
+                        <a href="/" class="w-full sm:w-auto rounded-xl border border-slate-200 bg-white px-6 py-3 sm:px-7 sm:py-3.5 text-sm sm:text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
                             <i class="fas fa-arrow-left mr-2"></i> Back to Website
                         </a>
                     </div>

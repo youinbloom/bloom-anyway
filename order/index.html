@@ -164,7 +164,7 @@
                         <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                             <div class="flex justify-between mb-4">
                                 <span class="text-slate-700">Bloom Anyway (Paperback)</span>
-                                <span class="font-semibold text-slate-900" id="bookPrice">$19.99</span>
+                                <span class="font-semibold text-slate-900" id="bookPrice">$30.00</span>
                             </div>
                             <div class="flex justify-between mb-4">
                                 <span class="text-slate-700">Shipping</span>
@@ -226,7 +226,7 @@
 
         // Update order summary
         function updateOrderSummary() {
-            const bookPrice = 19.99;
+            const bookPrice = 30.00;
             const shippingCostText = document.getElementById('shippingCost').textContent;
             const shippingCost = parseFloat(shippingCostText.replace('$', '')) || 0;
             const total = bookPrice + shippingCost;
@@ -331,7 +331,7 @@
                 city: document.getElementById('city').value,
                 state: document.getElementById('state').value,
                 zipCode: document.getElementById('zipCode').value,
-                bookPrice: 19.99,
+                bookPrice: 30.00,
                 shippingCost: document.getElementById('shippingCost').textContent,
                 total: document.getElementById('totalCost').textContent,
                 paymentMethod: paymentMethod
@@ -349,7 +349,7 @@
                 
                 // Show success message
                 alert('Order processed successfully!\n\nOrder Details:\n' +
-                      'Book: Bloom Anyway - $19.99\n' +
+                      'Book: Bloom Anyway - $30.00\n' +
                       'Shipping: ' + orderData.shippingCost + '\n' +
                       'Total: ' + orderData.total + '\n\n' +
                       'You will receive a confirmation email shortly at: ' + orderData.email);

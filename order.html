@@ -59,25 +59,42 @@
     </style>
 </head>
 <body class="bg-white">
-    <!-- Header (Same as home page) -->
-    <header class="fixed top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200">
-        <nav class="mx-auto max-w-6xl px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <span class="serif text-xl font-bold text-slate-900">Bloom Anyway</span>
-                </div>
-                <div class="hidden sm:flex items-center gap-8">
-                    <a href="index.html" class="text-slate-600 hover:text-slate-900 transition">Home</a>
-                    <a href="#about" class="text-slate-600 hover:text-slate-900 transition">About</a>
-                    <a href="#testimonials" class="text-slate-600 hover:text-slate-900 transition">Reviews</a>
-                    <a href="order.html" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition">Order</a>
-                </div>
-                <button class="sm:hidden text-slate-600">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </nav>
-    </header>
+    <!-- Shared Header -->
+    <div id="shared-header"></div>
+    <script>
+        // Inline script for order page to avoid path issues
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerContainer = document.getElementById('shared-header');
+            if (headerContainer) {
+                headerContainer.innerHTML = `
+                    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+                        <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+                            <a href="/" class="serif text-2xl font-bold tracking-tight text-slate-900">
+                                Bloom Anyway
+                            </a>
+                            <div class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
+                                <a href="/" class="hover:text-slate-900 transition">
+                                    Home
+                                </a>
+                                <a href="/#content" class="hover:text-slate-900 transition">
+                                    About
+                                </a>
+                                <a href="/#author" class="hover:text-slate-900 transition">
+                                    Author
+                                </a>
+                                <a href="/#testimonials" class="hover:text-slate-900 transition">
+                                    Testimonials
+                                </a>
+                                <a href="/order" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
+                                    Order
+                                </a>
+                            </div>
+                        </nav>
+                    </header>
+                `;
+            }
+        });
+    </script>
 
     <!-- Order Form Section -->
     <main class="bg-slate-50 pt-24 pb-16 sm:pt-32 sm:pb-20">
@@ -147,7 +164,7 @@
                         <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                             <div class="flex justify-between mb-4">
                                 <span class="text-slate-700">Bloom Anyway (Paperback)</span>
-                                <span class="font-semibold text-slate-900" id="bookPrice">$19.99</span>
+                                <span class="font-semibold text-slate-900" id="bookPrice">$30.00</span>
                             </div>
                             <div class="flex justify-between mb-4">
                                 <span class="text-slate-700">Shipping</span>
@@ -209,7 +226,7 @@
 
         // Update order summary
         function updateOrderSummary() {
-            const bookPrice = 19.99;
+            const bookPrice = 30.00;
             const shippingCostText = document.getElementById('shippingCost').textContent;
             const shippingCost = parseFloat(shippingCostText.replace('$', '')) || 0;
             const total = bookPrice + shippingCost;
@@ -314,7 +331,7 @@
                 city: document.getElementById('city').value,
                 state: document.getElementById('state').value,
                 zipCode: document.getElementById('zipCode').value,
-                bookPrice: 19.99,
+                bookPrice: 30.00,
                 shippingCost: document.getElementById('shippingCost').textContent,
                 total: document.getElementById('totalCost').textContent,
                 paymentMethod: paymentMethod
@@ -332,7 +349,7 @@
                 
                 // Show success message
                 alert('Order processed successfully!\n\nOrder Details:\n' +
-                      'Book: Bloom Anyway - $19.99\n' +
+                      'Book: Bloom Anyway - $30.00\n' +
                       'Shipping: ' + orderData.shippingCost + '\n' +
                       'Total: ' + orderData.total + '\n\n' +
                       'You will receive a confirmation email shortly at: ' + orderData.email);

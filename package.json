@@ -4,9 +4,9 @@
   "description": "A beautiful website for the book Bloom Anyway by Chioma Omeniho",
   "main": "index.html",
   "scripts": {
-    "dev": "python3 -m http.server 8000",
+    "dev": "node server.js",
     "build": "echo 'No build step needed for static site'",
-    "preview": "python3 -m http.server 8000"
+    "preview": "node server.js"
   },
   "keywords": [
     "book",

@@ -5,17 +5,13 @@ class USPSAPI {
     constructor() {
         // USPS API Configuration
         this.baseUrl = 'https://secure.shippingapis.com/ShippingAPI.dll';
-        this.userId = 'YOUR_USPS_USER_ID'; // Will be replaced with real User ID
-        this.testingMode = true; // Set to false for production
+        this.userId = 'YOUR_REAL_USPS_USER_ID'; // Replace with your real User ID
+        this.testingMode = false; // Set to false for production
     }
 
     // Validate address using USPS API
     async validateAddress(address1, address2, city, state, zip5) {
-        if (this.testingMode || this.userId === 'YOUR_USPS_USER_ID') {
-            // Demo mode - simulate API response
-            return this.getDemoAddressValidation(address1, city, state, zip5);
-        }
-
+        // Always try real API first, fallback to demo only on error
         try {
             const xmlRequest = this.buildAddressValidationXML(address1, address2, city, state, zip5);
             
@@ -31,11 +27,7 @@ class USPSAPI {
 
     // Get shipping rates using USPS API
     async getShippingRates(originZip, destinationZip, weight = 16) {
-        if (this.testingMode || this.userId === 'YOUR_USPS_USER_ID') {
-            // Demo mode - simulate API response
-            return this.getDemoShippingRates(destinationZip);
-        }
-
+        // Always try real API first, fallback to demo only on error
         try {
             const xmlRequest = this.buildShippingRatesXML(originZip, destinationZip, weight);
             
@@ -165,13 +157,26 @@ class USPSAPI {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, "text/xml");
             
+            // Check for API errors
+            const error = xmlDoc.querySelector('Error');
+            if (error) {
+                const description = error.querySelector('Description')?.textContent || 'Unknown error';
+                console.warn('⚠️ USPS API Error:', description);
+                throw new Error(description);
+            }
+
             const rates = [];
             const packages = xmlDoc.querySelectorAll('Package');
             
+            if (packages.length === 0) {
+                console.warn('⚠️ No rates returned from USPS API');
+                throw new Error('No rates available');
+            }
+            
             packages.forEach(pkg => {
-                const error = pkg.querySelector('Error');
-                if (error) {
-                    console.warn('Package error:', error.querySelector('Description')?.textContent);
+                const pkgError = pkg.querySelector('Error');
+                if (pkgError) {
+                    console.warn('⚠️ Package error:', pkgError.querySelector('Description')?.textContent);
                     return;
                 }
 
@@ -183,15 +188,22 @@ class USPSAPI {
                     rates.push({
                         service: service,
                         rate: rate,
-                        estimatedDays: this.getEstimatedDays(service)
+                        estimatedDays: this.getEstimatedDays(service),
+                        source: 'USPS_API' // Mark as real API rate
                     });
                 }
             });
-
-            return { rates: rates.length > 0 ? rates : this.getDemoShippingRates('10001').rates };
+            
+            if (rates.length === 0) {
+                throw new Error('No valid rates found');
+            }
+            
+            console.log('✅ Real USPS API rates retrieved:', rates.length, 'services');
+            return { rates: rates };
+            
         } catch (error) {
-            console.error('XML parsing error:', error);
-            return this.getDemoShippingRates('10001');
+            console.error('❌ Failed to parse USPS response:', error);
+            throw error;
         }
     }
 
@@ -251,22 +263,26 @@ class USPSAPI {
             expressRate = 34.99;
         }
 
+        console.warn('⚠️ Using estimated shipping rates (USPS API unavailable)');
         return {
             rates: [
                 {
                     service: 'USPS Ground Advantage™',
                     rate: baseRate,
-                    estimatedDays: 5
+                    estimatedDays: 5,
+                    source: 'ESTIMATE' // Mark as estimate
                 },
                 {
                     service: 'Priority Mail®',
                     rate: priorityRate,
-                    estimatedDays: 2
+                    estimatedDays: 2,
+                    source: 'ESTIMATE' // Mark as estimate
                 },
                 {
                     service: 'Priority Mail Express®',
                     rate: expressRate,
-                    estimatedDays: 1
+                    estimatedDays: 1,
+                    source: 'ESTIMATE' // Mark as estimate
                 }
             ]
         };

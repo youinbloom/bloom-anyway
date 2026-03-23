@@ -3,414 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Bloom Anyway - A Reflection on Growth, Resilience, and Turning 40</title>
-    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" ry="14" fill="%230f172a"/><text x="50%" y="52%" text-anchor="middle" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="26" fill="white">BA</text></svg>'>
+    <title>Order Bloom Anyway - Chioma Omeniho</title>
+    <meta name="description" content="Order your copy of Bloom Anyway by Chioma Omeniho. Choose between local pickup or standard shipping.">
+    <meta name="keywords" content="bloom anyway, chioma omeniho, order book, purchase book">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="usps-api-production.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+        .serif { font-family: 'Playfair Display', serif; }
+        .sans { font-family: 'Inter', sans-serif; }
         
-        .serif {
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Playfair Display', serif;
         }
         
-        .text-brand {
-            color: #667eea;
-        }
-        
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            background-color: #ffffff;
-            color: #000000;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .form-input::placeholder {
-            color: #9ca3af;
-        }
-        
-        .payment-option input[type="radio"] {
-            accent-color: #667eea;
+        .payment-option:hover {
+            border-color: rgb(203 213 225);
         }
     </style>
 </head>
-<body class="bg-white">
-    <!-- Shared Header -->
-    <div id="shared-header"></div>
-    <script>
-        // Inline script for order page to avoid path issues
-        document.addEventListener('DOMContentLoaded', function() {
-            const headerContainer = document.getElementById('shared-header');
-            if (headerContainer) {
-                headerContainer.innerHTML = `
-                    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-                        <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-                            <a href="/" class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-                                Bloom Anyway
-                            </a>
-                            <!-- Desktop Navigation -->
-                            <div class="hidden items-center gap-4 sm:gap-6 text-sm font-medium text-slate-700 md:flex">
-                                <a href="/" class="hover:text-slate-900 transition">
-                                    Home
-                                </a>
-                                <a href="/#content" class="hover:text-slate-900 transition">
-                                    About
-                                </a>
-                                <a href="/#author" class="hover:text-slate-900 transition">
-                                    Author
-                                </a>
-                                <a href="/#testimonials" class="hover:text-slate-900 transition">
-                                    Testimonials
-                                </a>
-                                <a href="/order" class="rounded-xl bg-slate-900 px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
-                                    Order
-                                </a>
-                            </div>
-                            <!-- Mobile Navigation -->
-                            <div class="flex items-center gap-3">
-                                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-600 hover:text-slate-900 transition p-2">
-                                    <i class="fas fa-bars text-lg"></i>
-                                </button>
-                            </div>
-                        </nav>
-                        <!-- Mobile Menu -->
-                        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white/95 backdrop-blur">
-                            <div class="px-4 py-3 space-y-2">
-                                <a href="/" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
-                                    Home
-                                </a>
-                                <a href="/#content" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
-                                    About
-                                </a>
-                                <a href="/#author" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
-                                    Author
-                                </a>
-                                <a href="/#testimonials" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition">
-                                    Testimonials
-                                </a>
-                                <a href="/order" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg transition">
-                                    Order
-                                </a>
-                            </div>
-                        </div>
-                    </header>
-                `;
-            }
-        });
+<body class="bg-slate-50">
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center">
+                        <span class="serif text-xl font-bold text-slate-900">Bloom Anyway</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="/" class="text-slate-600 hover:text-slate-900 transition">Home</a>
+                    <a href="/order.html" class="text-slate-900 font-medium">Order</a>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" id="mobileMenuBtn" class="text-slate-600 hover:text-slate-900 focus:outline-none focus:text-slate-900 p-2">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md">Home</a>
+                <a href="/order.html" class="block px-3 py-2 text-base font-medium text-slate-900 bg-slate-50 rounded-md">Order</a>
+            </div>
+        </div>
+    </header>
 
-        // Mobile menu functions
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
+    <main class="min-h-screen bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div class="max-w-3xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-8 sm:mb-12">
+                    <h1 class="serif text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4">
+                        Order Bloom Anyway
+                    </h1>
+                    <p class="text-lg sm:text-xl text-slate-600">
+                        Choose your preferred payment option below
+                    </p>
+                </div>
 
-        function closeMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.add('hidden');
-        }
-    </script>
-
-    <!-- Order Form Section -->
-    <main class="bg-slate-50 pt-24 pb-16 sm:pt-32 sm:pb-20">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6">
-            <div class="mx-auto max-w-4xl">
-                <div class="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm sm:p-10 reveal">
-                    
-                    <!-- Order Header -->
-                    <div class="text-center mb-6 sm:mb-8">
-                        <h1 class="serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 mb-4">Order Bloom Anyway</h1>
-                        <p class="text-base sm:text-lg text-slate-700">Complete your order for this inspiring reflection on growth and resilience</p>
-                    </div>
-                    
-                    <!-- Contact Information -->
-                    <div class="mb-6 sm:mb-8">
-                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Contact Information</h2>
-                        <div class="grid gap-4 sm:gap-6 sm:grid-cols-2">
+                <!-- Payment Options -->
+                <div class="space-y-6 sm:space-y-8">
+                    <div class="payment-option rounded-xl border border-slate-200 bg-white p-6 sm:p-8 cursor-pointer hover:border-slate-300 transition shadow-sm">
+                        <div class="flex items-center justify-between">
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">Local Pickup</h3>
+                                <p class="text-slate-600 mb-1">No shipping fee</p>
+                                <p class="text-sm text-slate-500">Pickup in Denver, CO</p>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" class="form-input" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
-                                <input type="email" id="email" name="email" class="form-input" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-input">
+                            <div class="text-right">
+                                <div class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">$30.00</div>
+                                <a href="https://buy.stripe.com/3cIcN59bUdiv2eIdFC6wE01" target="_blank" class="inline-flex items-center rounded-xl bg-slate-900 px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition">
+                                    <i class="fas fa-credit-card mr-2"></i>
+                                    <span>Pay Now</span>
+                                </a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Shipping Address -->
-                    <div class="mb-6 sm:mb-8">
-                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Shipping Address</h2>
-                        <div class="grid gap-4 sm:gap-6 sm:grid-cols-2">
-                            <div class="sm:col-span-2">
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Street Address *</label>
-                                <input type="text" id="address1" name="address1" class="form-input" required>
-                            </div>
+                    <div class="payment-option rounded-xl border border-slate-200 bg-white p-6 sm:p-8 cursor-pointer hover:border-slate-300 transition shadow-sm">
+                        <div class="flex items-center justify-between">
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Apartment, Suite, etc.</label>
-                                <input type="text" id="address2" name="address2" class="form-input">
+                                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">Standard Shipping</h3>
+                                <p class="text-slate-600 mb-1">USPS Ground Advantage</p>
+                                <p class="text-sm text-slate-500">5-7 business days delivery</p>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">City *</label>
-                                <input type="text" id="city" name="city" class="form-input" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">State *</label>
-                                <input type="text" id="state" name="state" class="form-input" required placeholder="e.g., NY">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">ZIP Code *</label>
-                                <input type="text" id="zipCode" name="zipCode" class="form-input" required maxlength="5" pattern="[0-9]{5}">
+                            <div class="text-right">
+                                <div class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">$80.00</div>
+                                <a href="https://buy.stripe.com/00w4gzfAi3HV3iM30Y6wE00" target="_blank" class="inline-flex items-center rounded-xl bg-slate-900 px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition">
+                                    <i class="fas fa-credit-card mr-2"></i>
+                                    <span>Pay Now</span>
+                                </a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Order Summary -->
-                    <div class="mb-6 sm:mb-8">
-                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Order Summary</h2>
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
-                            <div class="flex justify-between mb-4">
-                                <span class="text-slate-700">Bloom Anyway (Paperback)</span>
-                                <span class="font-semibold text-slate-900" id="bookPrice">$30.00</span>
-                            </div>
-                            <div class="flex justify-between mb-4">
-                                <span class="text-slate-700">Shipping</span>
-                                <span class="font-semibold text-slate-900" id="shippingCost">Calculating...</span>
-                            </div>
-                            <div class="border-t border-slate-200 pt-4">
-                                <div class="flex justify-between">
-                                    <span class="text-lg font-semibold text-slate-900">Total</span>
-                                    <span class="text-lg font-bold text-slate-900" id="totalCost">Calculating...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment Method -->
-                    <div class="mb-6 sm:mb-8">
-                        <h2 class="serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mb-4 sm:mb-6">Payment Method</h2>
-                        <div class="flex gap-4 sm:gap-6">
-                            <div class="payment-option">
-                                <input type="radio" id="card" name="payment" value="card" checked class="mr-2">
-                                <label for="card">Credit/Debit Card</label>
-                            </div>
-                            <div class="payment-option">
-                                <input type="radio" id="paypal" name="payment" value="paypal" class="mr-2">
-                                <label for="paypal">PayPal</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Order Actions -->
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <button type="button" onclick="validateAndContinue()" class="w-full sm:w-auto rounded-xl bg-slate-900 px-6 py-3 sm:px-7 sm:py-3.5 text-sm sm:text-base font-semibold text-white shadow-lg shadow-emerald-500/10 hover:bg-slate-800 transition">
-                            <i class="fas fa-lock mr-2"></i> Complete Order
-                        </button>
-                        <a href="/" class="w-full sm:w-auto rounded-xl border border-slate-200 bg-white px-6 py-3 sm:px-7 sm:py-3.5 text-sm sm:text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
-                            <i class="fas fa-arrow-left mr-2"></i> Back to Website
-                        </a>
-                    </div>
+                <!-- Back to Website -->
+                <div class="text-center mt-8 sm:mt-12">
+                    <a href="/" class="inline-flex items-center rounded-xl border border-slate-200 bg-white px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-slate-900 hover:bg-slate-50 transition">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        <span>Back to Website</span>
+                    </a>
                 </div>
             </div>
         </div>
     </main>
 
+    <footer class="bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="serif text-xl font-bold mb-4">Bloom Anyway</h3>
+                    <p class="text-slate-400 mb-4">
+                        A journey through grief, healing, and finding hope in unexpected places.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="serif text-xl font-bold mb-4">Connect</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="mailto:authorchiomaomeniho@gmail.com" class="text-slate-400 hover:text-white transition">
+                                <i class="fas fa-envelope mr-2"></i>
+                                authorchiomaomeniho@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center">
+                <p class="text-slate-400">
+                    &copy; 2024 Chioma Omeniho. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Initialize USPS API
-        let uspsAPI;
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
         
-        try {
-            uspsAPI = new USPSAPI();
-            console.log('✅ USPS API initialized successfully');
-        } catch (error) {
-            console.error('❌ USPS API initialization failed:', error);
-            // Create fallback API
-            uspsAPI = {
-                validateAddress: () => ({ isValid: true, message: 'Demo mode' }),
-                getShippingRates: () => ({ rates: [{ service: 'Demo', rate: 5.99 }] })
-            };
-        }
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
 
-        // Update order summary
-        function updateOrderSummary() {
-            const bookPrice = 30.00;
-            const shippingCostText = document.getElementById('shippingCost').textContent;
-            const shippingCost = parseFloat(shippingCostText.replace('$', '')) || 0;
-            const total = bookPrice + shippingCost;
-            
-            document.getElementById('totalCost').textContent = '$' + total.toFixed(2);
-        }
-
-        // Validate address and continue
-        async function validateAndContinue() {
-            const address1 = document.getElementById('address1').value;
-            const address2 = document.getElementById('address2').value;
-            const city = document.getElementById('city').value;
-            const state = document.getElementById('state').value;
-            const zipCode = document.getElementById('zipCode').value;
-            
-            // Validate required fields
-            if (!address1 || !city || !state || !zipCode) {
-                alert('Please fill in all required shipping address fields.');
-                return;
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
             }
-            
-            if (!/^\d{5}$/.test(zipCode)) {
-                alert('Please enter a valid 5-digit ZIP code.');
-                return;
-            }
-            
-            // Validate address with USPS
-            try {
-                const result = await uspsAPI.validateAddress(address1, address2, city, state, zipCode);
-                
-                if (result.error) {
-                    alert('Address validation failed: ' + result.error);
-                    return;
-                }
-                
-                if (result.isValid) {
-                    // Calculate shipping
-                    calculateShipping();
-                    // Process payment
-                    processOrder();
-                } else {
-                    alert('Address could not be verified. Please check your address and try again.');
-                }
-            } catch (error) {
-                console.error('Address validation error:', error);
-                alert('An error occurred while validating your address. Please try again.');
-            }
-        }
-
-        // Calculate shipping rates
-        async function calculateShipping() {
-            const zipCode = document.getElementById('zipCode').value;
-            
-            if (!zipCode || !/^\d{5}$/.test(zipCode)) {
-                document.getElementById('shippingCost').textContent = 'Invalid ZIP';
-                updateOrderSummary();
-                return;
-            }
-            
-            try {
-                // Use a fixed origin ZIP
-                const originZip = '10001'; // New York, NY as example
-                
-                const result = await uspsAPI.getShippingRates(originZip, zipCode);
-                
-                if (result.error) {
-                    document.getElementById('shippingCost').textContent = 'Error';
-                    updateOrderSummary();
-                    return;
-                }
-                
-                // Display shipping rates
-                const rates = result.rates;
-                if (rates && rates.length > 0) {
-                    // Use first rate (usually Ground Advantage)
-                    document.getElementById('shippingCost').textContent = '$' + rates[0].rate.toFixed(2);
-                    updateOrderSummary();
-                } else {
-                    document.getElementById('shippingCost').textContent = 'Error';
-                    updateOrderSummary();
-                }
-                
-            } catch (error) {
-                console.error('Shipping calculation error:', error);
-                document.getElementById('shippingCost').textContent = 'Error';
-                updateOrderSummary();
-            }
-        }
-
-        // Process order
-        async function processOrder() {
-            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-            
-            // Get form data
-            const orderData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                address1: document.getElementById('address1').value,
-                address2: document.getElementById('address2').value,
-                city: document.getElementById('city').value,
-                state: document.getElementById('state').value,
-                zipCode: document.getElementById('zipCode').value,
-                bookPrice: 30.00,
-                shippingCost: document.getElementById('shippingCost').textContent,
-                total: document.getElementById('totalCost').textContent,
-                paymentMethod: paymentMethod
-            };
-            
-            // Show processing state
-            const orderBtn = event.target;
-            const originalText = orderBtn.textContent;
-            orderBtn.textContent = 'Processing...';
-            orderBtn.disabled = true;
-            
-            try {
-                // Demo order processing - always succeeds
-                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate processing
-                
-                // Show success message
-                alert('Order processed successfully!\n\nOrder Details:\n' +
-                      'Book: Bloom Anyway - $30.00\n' +
-                      'Shipping: ' + orderData.shippingCost + '\n' +
-                      'Total: ' + orderData.total + '\n\n' +
-                      'You will receive a confirmation email shortly at: ' + orderData.email);
-                
-                // Redirect to success page or back to home
-                window.location.href = 'index.html';
-                
-            } catch (error) {
-                console.error('Order processing error:', error);
-                alert('Order failed: ' + error.message);
-                
-                // Reset button
-                orderBtn.textContent = originalText;
-                orderBtn.disabled = false;
-            }
-        }
-
-        // Auto-calculate shipping when ZIP changes
-        document.getElementById('zipCode').addEventListener('blur', calculateShipping);
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateOrderSummary();
         });
     </script>
 </body>
